@@ -282,6 +282,7 @@ Command.prototype.contentStream = function () {
         type: 'string', x: (first || cmd).x, y: (first || cmd).y, 
         string: str, font: font, color: color
       });
+      stream.emit('end');
       str = '';
     }
   });
@@ -295,7 +296,9 @@ Command.prototype.textStream = function () {
     if (cmd.type == 'string') {
       stream.emit('data', cmd.string);
     }
-  })
+  }).on('end', function () {
+    stream.emit('end');
+  });
   return stream;
 };
 
